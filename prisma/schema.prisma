@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  role     Int    @default(0)
+  password String
+}
+
+model Training {
+  id          String             @id @default(cuid())
+  category    TrainingCategory[]
+  description String
+  Lesson      Lesson[]
+}
+
+model TrainingCategory {
+  id         String    @id @default(cuid())
+  name       String
+  training   Training? @relation(fields: [trainingId], references: [id])
+  trainingId String?
+}
+
+model UserInvite {
+  id     String  @id @default(cuid())
+  invite String
+  used   Boolean @default(false)
+}
+
+model Lesson {
+  id         String   @id @default(cuid())
+  weekday    Int
+  time       Int
+  title      String
+  max_users  Int
+  training   Training @relation(fields: [trainingId], references: [id])
+  trainingId String
+}
