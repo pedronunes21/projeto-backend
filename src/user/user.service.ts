@@ -34,6 +34,8 @@ export class UserService {
                 id: true,
                 email: true,
                 role: true,
+                birthDate: true,
+                name: true,
                 ...params.select,
                 password: false,
             }
@@ -43,9 +45,8 @@ export class UserService {
     async createUser(data: Prisma.UserCreateInput, inviteCode: string): Promise<User> {
 
         const invite = await this.userInviteService.validateInvite(inviteCode)
-        console.log(invite)
 
-        const { email, password } = data;
+        const { email, password, birthDate, name } = data;
         const salt = await genSalt()
 
         const hashedPassword = await hash(password, salt);
@@ -53,6 +54,8 @@ export class UserService {
         try {
             const user = await this.prisma.user.create({
                 data: {
+                    birthDate: new Date(birthDate),
+                    name,
                     email,
                     password: hashedPassword,
                 }
@@ -67,9 +70,53 @@ export class UserService {
         }
     }
 
+    async updateUser(data: Prisma.UserUpdateInput) {
+        const { birthDate, email, name, password, id } = data;
+        const salt = await genSalt()
+
+        if (
+            typeof birthDate !== "string" ||
+            typeof email !== "string" ||
+            typeof name !== "string" ||
+            typeof password !== "string" ||
+            typeof id !== "string"
+        ) {
+            throw new BadRequestException("Verifique os campos e tente novamente!")
+        } else {
+            if (!password) {
+
+                return this.prisma.user.update({
+                    where: { id: id },
+                    data: {
+                        birthDate,
+                        email,
+                        name,
+                    }
+                })
+            } else {
+                const hashedPassword = await hash(password, salt);
+                return this.prisma.user.update({
+                    where: { id: id },
+                    data: {
+                        birthDate,
+                        email,
+                        name,
+                        password: hashedPassword
+                    }
+                })
+            }
+        }
+    }
+
+    async deleteUser(id: string) {
+        return this.prisma.user.delete({
+            where: { id }
+        })
+    }
+
     async createAdmin(data: Prisma.UserCreateInput): Promise<User> {
 
-        const { email, password } = data;
+        const { email, password, birthDate, name } = data;
         const salt = await genSalt()
 
         const hashedPassword = await hash(password, salt);
@@ -77,6 +124,8 @@ export class UserService {
         try {
             const user = await this.prisma.user.create({
                 data: {
+                    birthDate: new Date(birthDate),
+                    name,
                     email,
                     password: hashedPassword,
                     role: 1

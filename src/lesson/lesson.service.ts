@@ -10,7 +10,10 @@ export class LessonService {
         lessonWhereInput: Prisma.LessonWhereInput
     ): Promise<Lesson | null> {
         return this.prisma.lesson.findFirst({
-            where: lessonWhereInput
+            where: lessonWhereInput,
+            include: {
+                training: true
+            }
         })
     }
 
@@ -23,10 +26,39 @@ export class LessonService {
         select?: Prisma.LessonSelect,
         include?: Prisma.LessonInclude
     }): Promise<Lesson[]> {
-        return this.prisma.lesson.findMany({ ...params })
+        return this.prisma.lesson.findMany({
+            ...params, include: {
+                training: true,
+            }
+        })
+    }
+
+    async getTodayLessonsOrderedByTime(): Promise<Lesson[]> {
+        return this.lessons({
+            where: {
+                weekday: new Date().getDay()
+            },
+            orderBy: {
+                time: "asc"
+            }
+        })
     }
 
     async createLesson(data: Prisma.LessonCreateInput): Promise<Lesson> {
         return this.prisma.lesson.create({ data })
     }
+
+    async deleteLesson(id: string) {
+        return this.prisma.lesson.delete({
+            where: { id }
+        })
+    }
+
+    async updateLesson(id: string, data: Prisma.LessonUpdateInput) {
+        return this.prisma.lesson.update({
+            where: { id },
+            data
+        })
+    }
+
 }

@@ -11,24 +11,20 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
-  role     Int    @default(0)
-  password String
+  id          String        @id @default(cuid())
+  name        String
+  birthDate   DateTime
+  email       String        @unique
+  role        Int           @default(0)
+  password    String
+  appointment Appointment[]
 }
 
 model Training {
-  id          String             @id @default(cuid())
-  category    TrainingCategory[]
+  id          String   @id @default(cuid())
   description String
   Lesson      Lesson[]
-}
-
-model TrainingCategory {
-  id         String    @id @default(cuid())
-  name       String
-  training   Training? @relation(fields: [trainingId], references: [id])
-  trainingId String?
+  category    String
 }
 
 model UserInvite {
@@ -38,11 +34,22 @@ model UserInvite {
 }
 
 model Lesson {
-  id         String   @id @default(cuid())
-  weekday    Int
-  time       Int
-  title      String
-  max_users  Int
-  training   Training @relation(fields: [trainingId], references: [id])
-  trainingId String
+  id          String        @id @default(cuid())
+  weekday     Int
+  time        Int
+  title       String
+  max_users   Int
+  training    Training      @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  trainingId  String
+  appointment Appointment[]
+}
+
+model Appointment {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId  String?
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

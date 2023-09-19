@@ -1,4 +1,4 @@
-import { Body, Injectable } from "@nestjs/common";
+import { Body, Injectable, NotFoundException } from "@nestjs/common";
 import { Prisma, Training } from "@prisma/client";
 import { PrismaService } from "src/database/prisma.service";
 
@@ -10,7 +10,7 @@ export class TrainingService {
         trainingWhereUniqueInput: Prisma.TrainingWhereUniqueInput
     ): Promise<Training | null> {
         return this.prisma.training.findUnique({
-            where: trainingWhereUniqueInput
+            where: trainingWhereUniqueInput,
         })
     }
 
@@ -29,6 +29,19 @@ export class TrainingService {
     async createTraining(data: Prisma.TrainingCreateInput): Promise<Training> {
 
         return this.prisma.training.create({
+            data
+        })
+    }
+
+    async deleteTraining(id: string) {
+        return this.prisma.training.delete({
+            where: { id }
+        })
+    }
+
+    async updateTraining(id: string, data: Prisma.TrainingUpdateInput) {
+        return this.prisma.training.update({
+            where: { id },
             data
         })
     }

@@ -5,21 +5,42 @@ import { v4 } from 'uuid'
 
 @Injectable()
 export class UserInviteService {
-    constructor(private prismaService: PrismaService) { }
+    constructor(private prisma: PrismaService) { }
 
     async userInvite(
         userInviteWhereUniqueInput: Prisma.UserInviteWhereInput
     ) {
-        return this.prismaService.userInvite.findFirst({
+        return this.prisma.userInvite.findFirst({
             where: userInviteWhereUniqueInput
+        })
+    }
+
+    async userInvites(
+        params: {
+            skip?: number;
+            take?: number;
+            cursor?: Prisma.UserInviteWhereUniqueInput;
+            where?: Prisma.UserInviteWhereInput;
+            orderBy?: Prisma.UserInviteOrderByWithRelationInput;
+            select?: Prisma.UserInviteSelect,
+        }) {
+
+        return this.prisma.userInvite.findMany({
+            ...params
         })
     }
 
     async createUserInvite() {
         const inviteCode = v4()
 
-        return this.prismaService.userInvite.create({
+        return this.prisma.userInvite.create({
             data: { invite: inviteCode }
+        })
+    }
+
+    async deleteUserInvite(id: string) {
+        return this.prisma.userInvite.delete({
+            where: { id }
         })
     }
 
@@ -34,7 +55,7 @@ export class UserInviteService {
     }
 
     async consumeInvite(invite: UserInvite) {
-        return this.prismaService.userInvite.update({
+        return this.prisma.userInvite.update({
             where: { id: invite.id },
             data: {
                 used: true

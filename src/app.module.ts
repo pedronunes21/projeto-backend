@@ -7,6 +7,7 @@ import { RoleModule } from './role/role.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ScheduleService } from './schedule/schedule.service';
 import { LessonModule } from './lesson/lesson.module';
+import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LessonModule } from './lesson/lesson.module';
     PrismaModule,
     RoleModule,
     LessonModule,
+    AppointmentModule,
     ScheduleModule.forRoot(),
   ],
   providers: [ScheduleService]

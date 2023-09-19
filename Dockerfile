@@ -46,7 +46,7 @@ RUN apt-get update -qq && \
 # Copy built application
 COPY --from=build /app /app
 
-ENV DATABASE_URL="postgres://devlumiweb:liSL8sDxAOt0@ep-shiny-firefly-62319737.us-east-2.aws.neon.tech/pumpi"
+ENV DATABASE_URL="postgres://pedronunes21:7rw3puZWOVDL@ep-divine-butterfly-72528693.us-east-2.aws.neon.tech/pumpi"
 
 ENV JWT_SECRET="0)r1.P}Sv}L8D_UbZJ£k7JMgMU£QXefk-S@,68I7gN;:V1s>qB"
 

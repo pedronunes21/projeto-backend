@@ -11,6 +11,18 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
+    async isAdmin(token: string) {
+        const payload = await this.jwtService.verifyAsync(
+            token,
+            {
+                secret: process.env.JWT_SECRET
+            }
+        )
+
+        console.log(payload)
+        return true;
+    }
+
     async signIn(data: { email: string, password: string }) {
         const { email, password } = data;
         const user = await this.userService.user({ email })

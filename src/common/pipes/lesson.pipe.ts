@@ -8,9 +8,10 @@ export class GetLessonByIdPipe implements PipeTransform<string, any> {
 
     async transform(value: string) {
 
-        if (value === undefined)
-            throw new BadRequestException("Você deve informar um ID de aula")
+        if (!value)
+            return null;
 
+        value = String(value)
         const lessonId = value
 
         const lesson = await this.lessonService.lesson({

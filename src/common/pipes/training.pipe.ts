@@ -8,9 +8,10 @@ export class GetTrainingByIdPipe implements PipeTransform<string, any> {
 
     async transform(value: string) {
 
-        if (value === undefined)
-            throw new BadRequestException("Você deve informar um ID de treino")
+        if (!value)
+            return null;
 
+        value = String(value)
         const trainingId = value
 
         const training = await this.trainingService.training({
