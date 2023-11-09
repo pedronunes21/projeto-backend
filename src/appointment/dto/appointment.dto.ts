@@ -20,3 +20,7 @@ export class GetAppointmentByLessonDto {
     })
     lessonId: string;
 }
+
+export class setAppointmentPresenceDto {
+    [x: string]: boolean;
+}

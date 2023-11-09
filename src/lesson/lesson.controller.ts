@@ -27,7 +27,11 @@ export class LessonController {
     @Get("lesson")
     @UseGuards(AuthGuard)
     async getLessons(): Promise<Lesson[]> {
-        return this.lessonService.lessons({})
+        return this.lessonService.lessons({
+            orderBy: {
+                time: "asc",
+            }
+        })
     }
 
     @Get("today/lesson")

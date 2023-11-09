@@ -12,7 +12,12 @@ export class LessonService {
         return this.prisma.lesson.findFirst({
             where: lessonWhereInput,
             include: {
-                training: true
+                training: true,
+                appointment: {
+                    include: {
+                        user: true
+                    }
+                }
             }
         })
     }
@@ -36,7 +41,10 @@ export class LessonService {
     async getTodayLessonsOrderedByTime(): Promise<Lesson[]> {
         return this.lessons({
             where: {
-                weekday: new Date().getDay()
+                weekday: new Date().getDay(),
+                time: {
+                    gt: new Date().getHours() * 60 + new Date().getMinutes()
+                }
             },
             orderBy: {
                 time: "asc"

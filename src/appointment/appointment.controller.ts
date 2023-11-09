@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Get, UseGuards, Req, Delete, Param } from "@nestjs/common";
-import { CreateAppointmentDto, DeleteAppointmentDto, GetAppointmentByLessonDto } from "./dto/appointment.dto";
+import { CreateAppointmentDto, DeleteAppointmentDto, GetAppointmentByLessonDto, setAppointmentPresenceDto } from "./dto/appointment.dto";
 import { AppointmentService } from "./appointment.service";
 import { GetLessonByIdPipe } from "src/common/pipes/lesson.pipe";
 import { GetUserByIdPipe } from "src/common/pipes/user.pipe";
@@ -138,4 +138,12 @@ export class AppointmentController {
         })
     }
 
+    @Post("presence")
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
+    async setAppointmentPresence(
+        @Body() data: { [x: string]: boolean }
+    ) {
+        return this.appointmentService.setAppointmentPresence(data)
+    }
 }

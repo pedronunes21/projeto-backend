@@ -51,5 +51,6 @@ model Appointment {
   lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   lessonId  String?
   done      Boolean  @default(false)
+  presence  Boolean  @default(false)
   createdAt DateTime @default(now())
 }

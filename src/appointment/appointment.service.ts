@@ -79,4 +79,19 @@ export class AppointmentService {
         }
 
     }
+
+    async setAppointmentPresence(data: { [x: string]: boolean }) {
+        Object.keys(data).map(async (id) => {
+            await this.prisma.appointment.update({
+                where: {
+                    id
+                },
+                data: {
+                    presence: data[id]
+                }
+            })
+        })
+
+        return true;
+    }
 }
