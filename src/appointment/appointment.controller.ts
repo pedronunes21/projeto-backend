@@ -14,6 +14,33 @@ export class AppointmentController {
 
     constructor(private appointmentService: AppointmentService) { }
 
+    @Get("user/:id")
+    @UseGuards(AuthGuard)
+    async getAppointmentsByUser(
+        @Param("id") id: string,
+    ) {
+        return this.appointmentService.appointments({
+            where: {
+                userId: id,
+                done: true,
+            },
+            include: {
+                lesson: {
+                    include: {
+                        training: {
+                            select: {
+                                category: true
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: "desc"
+            }
+        })
+    }
+
     @Get()
     @UseGuards(AuthGuard)
     async getAppointments(@Req() req: {
