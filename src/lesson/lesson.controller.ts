@@ -30,7 +30,7 @@ export class LessonController {
         return this.lessonService.lessons({
             orderBy: {
                 time: "asc",
-            }
+            },
         })
     }
 

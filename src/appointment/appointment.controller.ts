@@ -22,7 +22,7 @@ export class AppointmentController {
         return this.appointmentService.appointments({
             where: {
                 userId: id,
-                done: true,
+                // done: true,
             },
             include: {
                 lesson: {
