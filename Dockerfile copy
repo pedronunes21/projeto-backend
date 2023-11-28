@@ -10,7 +10,7 @@ LABEL fly_launch_runtime="NestJS/Prisma"
 WORKDIR /app
 
 # Set production environment
-#ENV NODE_ENV="production"
+ENV NODE_ENV="production"
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
@@ -44,8 +44,7 @@ RUN apt-get update -qq && \
 # Copy built application
 COPY --from=build /app /app
 
-#ENV DATABASE_URL="postgresql://pedronunes21:7rw3puZWOVDL@ep-divine-butterfly-72528693.us-east-2.aws.neon.tech/pumpi"
-ENV DATABASE_URL "postgresql://postgres:AbeaAD6-a56BE1g1f35dFGDECf2FF-6B@roundhouse.proxy.rlwy.net:12651/railway"
+ENV DATABASE_URL="postgresql://pedronunes21:7rw3puZWOVDL@ep-divine-butterfly-72528693.us-east-2.aws.neon.tech/pumpi"
 
 ENV JWT_SECRET="0)r1.P}Sv}L8D_UbZJ£k7JMgMU£QXefk-S@,68I7gNV1s>qB"
 
