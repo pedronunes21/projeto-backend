@@ -45,7 +45,7 @@ RUN apt-get update -qq && \
 COPY --from=build /app /app
 
 #ENV DATABASE_URL="postgresql://pedronunes21:7rw3puZWOVDL@ep-divine-butterfly-72528693.us-east-2.aws.neon.tech/pumpi"
-ENV DATABASE_URL "postgresql://postgres:AbeaAD6-a56BE1g1f35dFGDECf2FF-6B@postgres-sjxq.railway.internal:5432/railway"
+ENV DATABASE_URL "postgresql://pedronunes21:7rw3puZWOVDL@ep-divine-butterfly-72528693.us-east-2.aws.neon.tech/pumpi?sslmode=require"
 
 ENV JWT_SECRET="0)r1.P}Sv}L8D_UbZJ£k7JMgMU£QXefk-S@,68I7gNV1s>qB"
 
